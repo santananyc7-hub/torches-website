@@ -1,0 +1,95 @@
+/* ============================================================
+   Torches — glass panels, buttons, chips
+   Loaded after style.css
+   ============================================================ */
+
+.glass {
+  position: relative;
+  overflow: hidden;
+  background: rgba(11, 21, 36, 0.5);
+  border: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07),
+    transparent 40%,
+    rgba(var(--accent-rgb), 0.06)
+  );
+  pointer-events: none;
+}
+
+.glass > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Buttons */
+.glass-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  color: #f3f2ef;
+  background: rgba(11, 21, 36, 0.62);
+  border: 1px solid rgba(189, 214, 230, 0.42);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease,
+    border-color 0.25s ease;
+}
+.glass-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Primary — warm brass/torch gradient (used sparingly for the key CTA) */
+.glass-btn--primary {
+  color: #1a1204;
+  background: linear-gradient(
+    135deg,
+    var(--gold),
+    color-mix(in srgb, var(--gold) 72%, #fff 26%)
+  );
+  border-color: transparent;
+  box-shadow: 0 10px 34px rgba(201, 161, 91, 0.28);
+}
+.glass-btn--primary:hover {
+  box-shadow: 0 14px 46px rgba(201, 161, 91, 0.42);
+  border-color: transparent;
+}
+
+/* Ghost — quiet tertiary */
+.glass-btn--ghost {
+  background: transparent;
+  border-color: var(--line);
+}
+
+/* Chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--sky);
+  background: rgba(28, 87, 165, 0.16);
+  border: 1px solid rgba(var(--accent-rgb), 0.24);
+}

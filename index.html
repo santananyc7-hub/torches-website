@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Torches NYC — Midtown's flagship cannabis dispensary in the landmark Nat Sherman Townhouse. Shop flower, pre-rolls, vapes, edibles and more. Express pickup a block from Grand Central; delivery across Manhattan. Lighting the way."
+    />
+    <title>Torches NYC — Lighting the Way | Midtown Cannabis Dispensary</title>
+
+    <!-- Preload hero-critical assets to cut FOUT + speed LCP -->
+    <link rel="preload" href="/fonts/RingsideCompressed-Bold.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/fonts/RingsideRegular-Book.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/img/poster.jpg" as="image" />
+  </head>
+  <body>
+    <!-- 21+ AGE GATE -->
+    <div class="agegate" id="agegate" hidden>
+      <div class="agegate__panel glass">
+        <img class="agegate__mark" src="/brand/pigeon.svg" alt="Torches" />
+        <p class="eyebrow center">Torches NYC · 12 E 42nd St</p>
+        <h2 class="agegate__title">Are you 21 or older?</h2>
+        <p class="agegate__body">
+          You must be at least 21 years of age to enter. New York licensed
+          adult-use cannabis.
+        </p>
+        <div class="agegate__cta">
+          <button class="glass-btn glass-btn--primary" id="age-yes">Yes, I'm 21+</button>
+          <button class="glass-btn glass-btn--ghost" id="age-no">Under 21</button>
+        </div>
+        <p class="agegate__deny" id="age-deny" hidden>
+          Sorry — you must be 21 or older to enter Torches.
+        </p>
+      </div>
+    </div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="preloader__word">TORCHES</div>
+      <div class="preloader__bar"><span></span></div>
+    </div>
+
+    <!-- Fixed cinematic background stack -->
+    <video
+      class="bg-video"
+      id="bgv"
+      playsinline
+      muted
+      preload="auto"
+      poster="/img/poster.jpg"
+    >
+      <source src="/bg.mp4" type="video/mp4" />
+    </video>
+    <div class="bg-tint"></div>
+    <div class="motion-glow" id="glow"></div>
+    <div class="mobile-poster" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <header class="nav" id="nav">
+      <a href="#home" class="nav__logo" aria-label="Torches NYC — home">
+        <img src="/brand/wordmark.svg" alt="Torches" class="nav__mark" />
+        <span class="nav__nyc">NYC</span>
+      </a>
+      <nav class="nav__links" id="navLinks">
+        <a href="#shop">Shop</a>
+        <a href="#deals" data-deals-open>Deals</a>
+        <a href="#design">The Space</a>
+        <a href="#journal">Guides</a>
+        <a href="#specs">Visit</a>
+      </nav>
+      <div class="nav__right">
+        <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" class="nav__cta glass-btn glass-btn--primary" data-cta="nav-shop">Shop the Menu</a>
+        <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="page">
+      <!-- 1. HERO -->
+      <section class="hero" id="home">
+        <div class="hero__inner">
+          <p class="eyebrow">Midtown Manhattan · A block from Grand Central · 21+</p>
+          <h1 class="hero__title">
+            <span class="line">LIGHTING</span>
+            <span class="line">THE WAY</span>
+          </h1>
+          <p class="hero__sub">
+            The future of New York consumption — Midtown's flagship cannabis
+            dispensary, inside the landmark Nat Sherman Townhouse.
+          </p>
+          <div class="hero__cta">
+            <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" class="glass-btn glass-btn--primary" data-cta="hero-shop">Shop — Pickup or Delivery</a>
+            <a href="#deals" class="glass-btn" data-cta="hero-offer" data-deals-open>See This Week's Deals</a>
+          </div>
+          <ul class="trust" aria-label="Why shop with Torches">
+            <li>NY Licensed · CAURD-24-000077</li>
+            <li>21+ · IDs checked</li>
+            <li>Open late · Fast Midtown delivery</li>
+            <li>Steps from Grand Central</li>
+          </ul>
+        </div>
+
+        <!-- Eye-catching deals pulse (opens the deals popup) -->
+        <button class="dealpulse" data-deals-open aria-label="See this week's deals">
+          <span class="dealpulse__ring" aria-hidden="true"></span>
+          <span class="dealpulse__badge">This week only</span>
+          <span class="dealpulse__big">Up to <b>50%</b> off</span>
+          <span class="dealpulse__list">STIIIZY BOGO · Purps BOGO · Akron from $8 &amp; more</span>
+          <span class="dealpulse__cta">See this week's deals →</span>
+          <span class="dealpulse__note">No codes — auto-applied at checkout</span>
+        </button>
+
+        <div class="scroll-hint"><span>Shop below</span><i></i></div>
+      </section>
+
+      <!-- 2. SHOP — live menu embed + category deep-links (products first) -->
+      <section class="shop" id="shop">
+        <div class="shop__head">
+          <div>
+            <p class="eyebrow">Shop the menu</p>
+            <h2 class="section-head">621 products, ready for pickup &amp; delivery.</h2>
+          </div>
+          <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" class="glass-btn glass-btn--primary shop__all" data-cta="shop-all">Browse full menu</a>
+        </div>
+
+        <p class="shop__label">Shop by category</p>
+        <!-- Static tiles are the SEO / no-JS fallback. When MENU_API (src/menu.js)
+             is set to your Dutchie Plus proxy, these are re-rendered from live data. -->
+        <div class="shop__grid" id="shop-grid">
+          <a class="cat glass" data-cta="cat-flower" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Flower</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-prerolls" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Pre-Rolls</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-vapes" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Vapes</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-edibles" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Edibles</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-concentrates" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Concentrates</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-tinctures" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Tinctures</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-topicals" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Topicals</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-beverages" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Beverages</span><span class="cat__go">Shop →</span></a>
+          <a class="cat glass" data-cta="cat-accessories" href="https://torches.nyc/shop/" target="_blank" rel="noopener"><span class="cat__name">Accessories</span><span class="cat__go">Shop →</span></a>
+        </div>
+        <div class="shop__ways">
+          <span>Two ways to get it:</span>
+          <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" data-cta="ways-pickup">Express pickup — 12 E 42nd St</a>
+          <i>·</i>
+          <a href="https://torches.nyc/cannabis-delivery-nyc/" target="_blank" rel="noopener" data-cta="ways-delivery">Delivery across Manhattan</a>
+        </div>
+      </section>
+
+      <!-- 3. DEALS -->
+      <section class="deals" id="deals">
+        <div class="deals__head">
+          <p class="eyebrow">This week's specials</p>
+          <h2 class="section-head">Save automatically — no codes.</h2>
+        </div>
+        <div class="deals__grid">
+          <a class="deal glass deal--feature" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-stiiizy">
+            <img class="deal__thumb" src="/img/products/stiiizy.jpg" alt="" loading="lazy" />
+            <span class="deal__tag">Vapes</span>
+            <h3 class="deal__title">STIIIZY — Buy One, Get One 40% Off</h3>
+            <p class="deal__body">The marquee brand, this week only. Sale pricing applied automatically at checkout.</p>
+            <span class="deal__go">Shop STIIIZY →</span>
+          </a>
+          <a class="deal glass" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-purps">
+            <div class="deal__thumb deal__thumb--badge"><b>50%</b><span>OFF</span></div>
+            <span class="deal__tag">BOGO</span>
+            <h3 class="deal__title">Purps — Buy One, Get One 50% Off</h3>
+            <p class="deal__body">The biggest saving on the menu right now.</p>
+            <span class="deal__go">Shop now →</span>
+          </a>
+          <a class="deal glass" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-akron">
+            <img class="deal__thumb" src="/img/products/akron.jpg" alt="" loading="lazy" />
+            <span class="deal__tag">Bulk buy</span>
+            <h3 class="deal__title">Akron — from $8 each</h3>
+            <p class="deal__body">2 for $11 ea · 3 for $10 · 4 for $9 · 5 or more for $8 each.</p>
+            <span class="deal__go">Shop now →</span>
+          </a>
+          <a class="deal glass" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-jaunty">
+            <img class="deal__thumb" src="/img/products/jaunty.jpg" alt="" loading="lazy" />
+            <span class="deal__tag">BOGO</span>
+            <h3 class="deal__title">Jaunty — Buy One, Get One 40% Off</h3>
+            <p class="deal__body">Buy one, get one 40% off — auto-applied at checkout.</p>
+            <span class="deal__go">Shop now →</span>
+          </a>
+          <a class="deal glass" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-mfny">
+            <img class="deal__thumb" src="/img/products/mfny.jpg" alt="" loading="lazy" />
+            <span class="deal__tag">Bundle</span>
+            <h3 class="deal__title">MFNY — Buy 2, Get 20% Off</h3>
+            <p class="deal__body">Stack two and save on premium concentrates &amp; flower.</p>
+            <span class="deal__go">Shop now →</span>
+          </a>
+          <a class="deal glass" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deal-highfalls">
+            <img class="deal__thumb" src="/img/products/highfalls.jpg" alt="" loading="lazy" />
+            <span class="deal__tag">20% Off</span>
+            <h3 class="deal__title">High Falls Tinctures — 20% Off</h3>
+            <p class="deal__body">Precise, fast-acting tinctures for measured dosing.</p>
+            <span class="deal__go">Shop now →</span>
+          </a>
+        </div>
+        <p class="deals__foot">
+          <a href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="deals-all" data-deals-open>See all weekly specials →</a>
+        </p>
+      </section>
+
+      <!-- AS SEEN IN (press / backlinks) -->
+      <section class="press" id="press">
+        <p class="press__label">As seen in</p>
+        <div class="press__row">
+          <a class="press__logo" href="https://hightimes.com/dispensaries/from-queens-to-the-cannabis-cup-inside-torches-the-social-equity-dream-taking-over-nycs-most-iconic-cigar-townhouse/" target="_blank" rel="noopener" data-cta="press-hightimes" aria-label="High Times">
+            <img src="/img/press/hightimes.jpg" alt="High Times" loading="eager" />
+          </a>
+          <a class="press__logo" href="https://cannabisnow.com/dispensary-review-torches-nyc/" target="_blank" rel="noopener" data-cta="press-cannabisnow" aria-label="Cannabis Now">
+            <img src="/img/press/cannabisnow.png" alt="Cannabis Now" loading="eager" />
+          </a>
+          <a class="press__logo" href="https://leafmagazines.com/profiles/dispensaries/shop-review-torches/" target="_blank" rel="noopener" data-cta="press-leaf" aria-label="Leaf Nation">
+            <img src="/img/press/leafnation.svg" alt="Leaf Nation" loading="eager" />
+          </a>
+        </div>
+        <p class="press__sub">Reviewed on</p>
+        <div class="press__row press__row--reviews">
+          <a class="press__logo press__logo--rev" href="https://www.leafly.com/dispensary-info/torches-nyc" target="_blank" rel="noopener" data-cta="press-leafly" aria-label="Leafly">
+            <img src="/img/press/leafly.svg" alt="Leafly" loading="eager" />
+          </a>
+          <a class="press__logo press__logo--rev" href="https://weedmaps.com/dispensaries/torches-nyc" target="_blank" rel="noopener" data-cta="press-weedmaps" aria-label="Weedmaps">
+            <img src="/img/press/weedmaps.svg" alt="Weedmaps" loading="eager" />
+          </a>
+          <a class="press__logo press__logo--rev" href="https://www.yelp.com/biz/torches-new-york" target="_blank" rel="noopener" data-cta="press-yelp" aria-label="Yelp">
+            <img src="/img/press/yelp.svg" alt="Yelp" loading="eager" />
+          </a>
+        </div>
+      </section>
+
+      <!-- 4. IMPACT -->
+      <section class="impact" id="impact">
+        <div class="impact__pin">
+          <p class="eyebrow center">Why Torches</p>
+          <p class="impact__head">
+            <span class="word">Raise</span>
+            <span class="word">your</span>
+            <span class="word">standards.</span>
+          </p>
+          <p class="impact__note">
+            New York has no shortage of dispensaries. It was short on a great one.
+            We built the future of consumption in the city — an expert-picked
+            selection, straight answers, and a room worth walking into.
+          </p>
+        </div>
+      </section>
+
+      <!-- 5. GUIDANCE -->
+      <section class="feature feature--alt" id="service">
+        <div class="feature__grid">
+          <div class="feature__panel glass">
+            <p class="feature__quote">
+              “We ask what you're after before we recommend anything.”
+            </p>
+            <p class="feature__quote-sub">Guidance, not upsells</p>
+          </div>
+          <div class="feature__text">
+            <p class="eyebrow">The Guidance</p>
+            <h2 class="feature__title">Answers, not upsells.</h2>
+            <p class="feature__body">
+              First time or your thousandth, our staff actually knows the products.
+              We start with what you want out of it, then point you to the right
+              thing — not the priciest thing. You leave confident, every time.
+            </p>
+            <ul class="chips">
+              <li class="chip">Expert staff</li>
+              <li class="chip">Honest picks</li>
+              <li class="chip">Zero pressure</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. DESIGN & MATERIALS -->
+      <section class="design" id="design">
+        <div class="design__head">
+          <p class="eyebrow center">The Space</p>
+          <h2 class="section-head">A room worth the trip.</h2>
+          <p class="section-sub">
+            Set inside the landmarked Nat Sherman Townhouse — a modern apothecary
+            where the materials carry the brand.
+          </p>
+        </div>
+        <div class="material-row">
+          <article class="material glass">
+            <span class="material__no">Navy</span>
+            <h3>Deep navy walls</h3>
+            <p>The cool, confident ground the whole room is built on.</p>
+          </article>
+          <article class="material glass">
+            <span class="material__no">Mahogany</span>
+            <h3>Apothecary cabinetry</h3>
+            <p>Carved wood and lit vitrines that display goods like artifacts.</p>
+          </article>
+          <article class="material glass">
+            <span class="material__no">Brass</span>
+            <h3>Opal-glass globes</h3>
+            <p>Warm globe light against the navy — the signature glow.</p>
+          </article>
+          <article class="material glass">
+            <span class="material__no">Mosaic</span>
+            <h3>Star-tile floor</h3>
+            <p>A black-and-cream mosaic that grounds the Old-World detail.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7. MADE FOR THE AUDIENCE -->
+      <section class="workflow" id="workflow">
+        <div class="workflow__pin">
+          <div class="workflow__intro">
+            <p class="eyebrow">However you shop</p>
+            <h2 class="section-head">Built for every New Yorker.</h2>
+          </div>
+          <div class="workflow__track" id="workflow-track">
+            <article class="workflow-card glass">
+              <span class="workflow-card__no">First-timer</span>
+              <h3>New to it</h3>
+              <p>No jargon, no judgment. Tell us the vibe you're after and we'll
+                put exactly the right thing in your hand.</p>
+            </article>
+            <article class="workflow-card glass">
+              <span class="workflow-card__no">Connoisseur</span>
+              <h3>Know your stuff</h3>
+              <p>Rare drops, top-shelf flower, and the brands worth knowing — plus
+                staff who can actually talk shop.</p>
+            </article>
+            <article class="workflow-card glass">
+              <span class="workflow-card__no">Commuter</span>
+              <h3>On the move</h3>
+              <p>Order ahead, skip the line, grab it a block from Grand Central on
+                your way through Midtown.</p>
+            </article>
+            <article class="workflow-card glass">
+              <span class="workflow-card__no">At home</span>
+              <h3>Staying in</h3>
+              <p>Delivery across Manhattan. Stock up for the week or the weekend
+                without leaving the couch.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. GUIDES & JOURNAL (SEO) -->
+      <section class="journal" id="journal">
+        <div class="journal__head">
+          <div>
+            <p class="eyebrow">Guides &amp; Journal</p>
+            <h2 class="section-head">Learn before you light up.</h2>
+          </div>
+          <a href="https://torches.nyc/" target="_blank" rel="noopener" class="glass-btn journal__all">Read the journal</a>
+        </div>
+        <div class="journal__grid">
+          <a class="post glass" href="https://torches.nyc/" target="_blank" rel="noopener">
+            <span class="post__cat">Beginner</span>
+            <h3>A guide for the cannabis-curious</h3>
+            <p>Where to start, what the terms mean, and how to pick your first thing.</p>
+            <span class="post__go">Read →</span>
+          </a>
+          <a class="post glass" href="https://torches.nyc/" target="_blank" rel="noopener">
+            <span class="post__cat">Product 101</span>
+            <h3>How to read a cannabis label</h3>
+            <p>THC, terpenes, dosage — decode the package before you buy.</p>
+            <span class="post__go">Read →</span>
+          </a>
+          <a class="post glass" href="https://torches.nyc/" target="_blank" rel="noopener">
+            <span class="post__cat">City guide</span>
+            <h3>A high-minded day in Midtown</h3>
+            <p>From Grand Central to the galleries — the city's better with a lift.</p>
+            <span class="post__go">Read →</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 9. SPECS / PARTICULARS -->
+      <section class="specs" id="specs">
+        <div class="specs__head">
+          <p class="eyebrow">The Particulars</p>
+          <h2 class="section-head">Everything you need to get here.</h2>
+        </div>
+        <div class="specs__table glass">
+          <div class="spec"><span class="spec__key">Address</span><span class="spec__value">12 E 42nd St, New York, NY 10017</span></div>
+          <div class="spec"><span class="spec__key">Neighborhood</span><span class="spec__value">Midtown · Steps from Grand Central</span></div>
+          <div class="spec"><span class="spec__key">The Building</span><span class="spec__value">The landmark Nat Sherman Townhouse</span></div>
+          <div class="spec"><span class="spec__key">Hours</span><span class="spec__value">Sun 11–10 · Mon–Wed 8–11 · Thu–Fri 8–12 · Sat 11–12</span></div>
+          <div class="spec"><span class="spec__key">Entry</span><span class="spec__value">21+ · No medical card required</span></div>
+          <div class="spec"><span class="spec__key">Get it</span><span class="spec__value">Express pickup &amp; fast Manhattan delivery</span></div>
+          <div class="spec"><span class="spec__key">Contact</span><span class="spec__value">646-477-4110 · hello@torches.nyc</span></div>
+          <div class="spec"><span class="spec__key">License</span><span class="spec__value">NY adult-use · CAURD-24-000077</span></div>
+          <div class="spec"><span class="spec__key">Menu</span><span class="spec__value">621 products · Flower · Pre-rolls · Vapes · Edibles · Concentrates · Tinctures · Topicals · Beverages · Accessories</span></div>
+        </div>
+      </section>
+
+      <!-- 10. VISIT / SHOP CTA -->
+      <section class="buy" id="buy">
+        <div class="buy__panel glass">
+          <p class="eyebrow center">Come see for yourself</p>
+          <h2 class="buy__title">Come see the future.</h2>
+          <p class="buy__amount">The future of consumption in New York.</p>
+          <p class="buy__body">
+            Shop the menu for express pickup a block from Grand Central, or get it
+            delivered anywhere in Manhattan. 21+, no medical card.
+          </p>
+          <div class="buy__cta">
+            <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" class="glass-btn glass-btn--primary" data-cta="buy-pickup">Shop the Menu</a>
+            <a href="https://torches.nyc/cannabis-delivery-nyc/" target="_blank" rel="noopener" class="glass-btn" data-cta="buy-delivery">Get it Delivered</a>
+            <a href="#specs" class="glass-btn glass-btn--ghost" data-cta="buy-visit">Visit Midtown</a>
+          </div>
+          <ul class="trust trust--center" aria-label="Trust">
+            <li>NY Licensed · CAURD-24-000077</li>
+            <li>21+ · IDs checked</li>
+            <li>Open late · Steps from Grand Central</li>
+            <li>Fast Manhattan delivery</li>
+          </ul>
+          <p class="buy__fine">Adults 21+. No medical card required. Please consume responsibly.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <img class="footer__logo" src="/brand/lockup.svg" alt="Torches NYC" />
+      <div class="footer__rows">
+        <div class="footer__col">
+          <span>Shop</span>
+          <a href="#shop">By category</a>
+          <a href="#deals">Deals &amp; drops</a>
+          <a href="https://torches.nyc/shop/" target="_blank" rel="noopener">Full menu</a>
+        </div>
+        <div class="footer__col">
+          <span>Visit</span>
+          <a href="#specs">12 E 42nd St</a>
+          <a href="#buy">Delivery</a>
+          <a href="#journal">Guides &amp; Journal</a>
+        </div>
+        <div class="footer__col">
+          <span>Torches NYC</span>
+          <p class="footer__note">
+            The future of consumption in New York. Midtown's flagship dispensary,
+            a block from Grand Central.
+          </p>
+        </div>
+      </div>
+      <div class="footer__base">
+        <span>© Torches NYC</span>
+        <span>Adults 21+ · Licensed NY adult-use cannabis · Consume responsibly.</span>
+      </div>
+    </footer>
+
+    <!-- Sticky mobile action bar (thumb-zone) -->
+    <div class="mobilebar" id="mobilebar" aria-label="Shop">
+      <a href="https://torches.nyc/shop/" target="_blank" rel="noopener" class="mobilebar__btn mobilebar__btn--primary" data-cta="mbar-pickup">Pickup</a>
+      <a href="https://torches.nyc/cannabis-delivery-nyc/" target="_blank" rel="noopener" class="mobilebar__btn" data-cta="mbar-delivery">Delivery</a>
+    </div>
+
+    <!-- Deals popup / modal -->
+    <div class="dealsmodal" id="dealsmodal" hidden role="dialog" aria-modal="true" aria-label="This week's deals">
+      <div class="dealsmodal__panel glass">
+        <button class="dealsmodal__close" id="dealsClose" aria-label="Close deals">&times;</button>
+        <p class="eyebrow">This week only · no codes, auto-applied at checkout</p>
+        <h2 class="dealsmodal__title">Up to 50% off this week.</h2>
+        <!-- Populated from the deals section by src/main.js -->
+        <div class="dealsmodal__grid" id="dealsmodal-grid"></div>
+        <a class="glass-btn glass-btn--primary dealsmodal__all" href="https://torches.nyc/midtown-nyc-cannabis-deals/" target="_blank" rel="noopener" data-cta="modal-all">Open the full deals menu →</a>
+      </div>
+    </div>
+
+    <canvas class="smoke-canvas" id="smoke" aria-hidden="true"></canvas>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

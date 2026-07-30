@@ -1,0 +1,19 @@
+{
+  "name": "torches-landing",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Torches — scroll-driven cannabis emporium landing page",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.14"
+  }
+}

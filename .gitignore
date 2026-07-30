@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# build output (produced by CI, not committed)
+dist/
+
+# unused 45MB HD video — the site loads bg.mp4 (12MB); keep the repo lean
+public/bg-hd.mp4
+
+# local / editor
+.DS_Store
+*.local
+.vscode/
