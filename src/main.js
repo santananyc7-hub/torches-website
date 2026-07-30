@@ -246,6 +246,17 @@ function scrubVideo() {
 
 lenis.on("scroll", scrubVideo);
 
+/* On touch devices Lenis scroll events can be sparse and iOS renders video
+   seeks far better on animation frames — so drive the scrub with a continuous
+   rAF loop that reads the live scroll position every frame. */
+if (isTouch) {
+  const rafScrub = () => {
+    scrubVideo();
+    requestAnimationFrame(rafScrub);
+  };
+  requestAnimationFrame(rafScrub);
+}
+
 /* Drifting accent glow follows scroll subtly (never dominant) */
 const glow = document.querySelector("#glow");
 function moveGlow() {
