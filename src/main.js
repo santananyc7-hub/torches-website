@@ -234,7 +234,6 @@ if (bgVideo) {
 }
 
 function scrubVideo() {
-  if (isTouch) return; // mobile autoplays + loops the video instead of scrubbing it
   if (!videoReady || !bgVideo || !bgVideo.duration) return;
   const max = document.documentElement.scrollHeight - window.innerHeight;
   const progress = max > 0 ? gsap.utils.clamp(0, 1, window.scrollY / max) : 0;
@@ -518,15 +517,20 @@ function boot() {
     pre.classList.add("is-done");
     if (bgVideo) {
       if (isTouch) {
-        // Mobile: play the cinematic video as a looping background (scrubbing is
-        // unreliable on touch, so we let it run instead).
-        bgVideo.loop = true;
+        // Mobile: scrub the video with scroll (same as desktop). Prime the
+        // decoder with a muted play()->pause() so iOS honors currentTime seeks
+        // (the all-keyframe encode makes those seeks fast), then scrub controls it.
         bgVideo.muted = true;
-        bgVideo.setAttribute("autoplay", "");
-        const tryPlay = () => bgVideo.play().catch(() => {});
-        tryPlay();
-        // Fallback: if muted autoplay is blocked, start on the first interaction.
-        const kick = () => tryPlay();
+        bgVideo.loop = false;
+        const prime = () => {
+          const p = bgVideo.play();
+          if (p && p.then) p.then(() => { bgVideo.pause(); scrubVideo(); }).catch(() => {});
+          else { bgVideo.pause(); scrubVideo(); }
+        };
+        prime();
+        // iOS often only unlocks seeking after a real gesture — the first
+        // touch/scroll re-primes so scrubbing kicks in immediately after.
+        const kick = () => prime();
         window.addEventListener("touchstart", kick, { passive: true, once: true });
         window.addEventListener("click", kick, { once: true });
       } else {
