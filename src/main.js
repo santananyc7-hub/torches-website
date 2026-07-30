@@ -234,6 +234,7 @@ if (bgVideo) {
 }
 
 function scrubVideo() {
+  if (isTouch) return; // mobile autoplays + loops the video instead of scrubbing it
   if (!videoReady || !bgVideo || !bgVideo.duration) return;
   const max = document.documentElement.scrollHeight - window.innerHeight;
   const progress = max > 0 ? gsap.utils.clamp(0, 1, window.scrollY / max) : 0;
@@ -515,7 +516,23 @@ function boot() {
 
   const done = () => {
     pre.classList.add("is-done");
-    if (bgVideo && !isTouch) bgVideo.play().catch(() => {}); // decode warm-up; scrub controls it
+    if (bgVideo) {
+      if (isTouch) {
+        // Mobile: play the cinematic video as a looping background (scrubbing is
+        // unreliable on touch, so we let it run instead).
+        bgVideo.loop = true;
+        bgVideo.muted = true;
+        bgVideo.setAttribute("autoplay", "");
+        const tryPlay = () => bgVideo.play().catch(() => {});
+        tryPlay();
+        // Fallback: if muted autoplay is blocked, start on the first interaction.
+        const kick = () => tryPlay();
+        window.addEventListener("touchstart", kick, { passive: true, once: true });
+        window.addEventListener("click", kick, { once: true });
+      } else {
+        bgVideo.play().catch(() => {}); // decode warm-up; scrub controls it
+      }
+    }
     heroIntro();
     scrubVideo();
     ScrollTrigger.refresh();

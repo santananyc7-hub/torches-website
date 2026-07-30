@@ -1487,6 +1487,8 @@ section {
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   scrollbar-width: thin;
   scrollbar-color: rgba(189, 214, 230, 0.4) transparent;
 }
@@ -1652,17 +1654,10 @@ section {
 }
 
 @media (hover: none), (max-width: 768px) {
+  /* Keep the cinematic video visible on mobile — it autoplays + loops via JS.
+     The <video poster> attribute covers the first paint if autoplay is delayed. */
   .bg-video {
-    display: none;
-  }
-  .mobile-poster {
     display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background-image: url("/img/poster.jpg");
-    background-size: cover;
-    background-position: center;
   }
   .smoke-canvas {
     display: none;
