@@ -277,6 +277,28 @@ section {
   padding: clamp(6rem, 14vh, 12rem) var(--pad);
 }
 
+/* Legibility scrim behind every content section (the hero has its own tuned
+   scrim). The small, light copy was washing out over the bright, moving video;
+   this darkens the backdrop so it stays readable. `isolation: isolate` scopes
+   the z-index:-1 pseudo behind the section's own content without affecting any
+   child stacking (safe for the pinned sections). */
+section:not(#home) {
+  isolation: isolate;
+}
+section:not(#home)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 7, 14, 0.58) 0%,
+    rgba(5, 7, 14, 0.6) 50%,
+    rgba(5, 7, 14, 0.64) 100%
+  );
+}
+
 .section-head {
   font-size: clamp(2.4rem, 6vw, 4.6rem);
   max-width: 16ch;
@@ -294,7 +316,23 @@ section {
 .section-sub {
   color: var(--muted);
   margin-top: 1.1rem;
-  font-size: 1.05rem;
+  font-size: 1.14rem;
+}
+
+/* Small, light copy that sits over the video — a soft shadow keeps it crisp
+   on top of the section scrim regardless of the frame behind it. */
+.section-sub,
+.feature__body,
+.post__excerpt,
+.shop__ways,
+.press__sub,
+.dealpulse__list,
+.dealpulse__note,
+.scroll-hint,
+.material__label,
+.spec__label,
+.buy__note {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* ============================================================
@@ -445,7 +483,7 @@ section {
 }
 .pcard__meta {
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   margin: 0;
 }
 .pcard--feature .pcard__cta {
@@ -508,7 +546,7 @@ section {
   color: var(--muted);
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   letter-spacing: 0.1em;
 }
 .scroll-hint i {
@@ -858,7 +896,7 @@ section {
 }
 .footer__note {
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 1.02rem;
   margin: 0;
 }
 .footer__base {
@@ -1057,7 +1095,7 @@ section {
   color: var(--muted);
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 0.98rem;
+  font-size: 1.06rem;
 }
 .shop__ways a {
   color: var(--sky);
@@ -1464,7 +1502,7 @@ section {
 }
 .dealpulse__list {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1.02rem;
 }
 .dealpulse__cta {
   margin-top: 0.4rem;
@@ -1478,7 +1516,7 @@ section {
 }
 .dealpulse__note {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 /* ============================================================
