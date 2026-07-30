@@ -267,6 +267,16 @@ h3 {
   padding: 0.6rem 1.1rem;
   white-space: nowrap;
 }
+/* Rewards link stands out in gold among the nav items */
+.nav__links a.nav__reward {
+  color: var(--gold);
+}
+.nav__links a.nav__reward:hover {
+  color: #f0d493;
+}
+.nav__links a.nav__reward::after {
+  background: var(--gold);
+}
 
 /* ============================================================
    Shared section scaffolding
@@ -985,6 +995,16 @@ section:not(#home)::before {
   color: var(--muted);
   font-size: 1.02rem;
   margin: 0;
+}
+.footer__col a.footer__reward {
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 0.6rem;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease;
+}
+.footer__col a.footer__reward:hover {
+  color: #f0d493;
 }
 .footer__base {
   max-width: var(--maxw);
