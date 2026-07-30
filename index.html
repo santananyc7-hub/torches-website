@@ -52,6 +52,8 @@
     >
       <source src="/bg.mp4" type="video/mp4" />
     </video>
+    <!-- Mobile: canvas image-sequence scrubber (iOS can't seek <video> on scroll) -->
+    <canvas class="bg-frames" id="bgframes" aria-hidden="true"></canvas>
     <div class="bg-tint"></div>
     <div class="motion-glow" id="glow"></div>
     <div class="mobile-poster" aria-hidden="true"></div>

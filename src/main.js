@@ -246,16 +246,88 @@ function scrubVideo() {
 
 lenis.on("scroll", scrubVideo);
 
-/* On touch devices Lenis scroll events can be sparse and iOS renders video
-   seeks far better on animation frames — so drive the scrub with a continuous
-   rAF loop that reads the live scroll position every frame. */
-if (isTouch) {
-  const rafScrub = () => {
-    scrubVideo();
-    requestAnimationFrame(rafScrub);
-  };
-  requestAnimationFrame(rafScrub);
+/* ------------------------------------------------------------
+   Mobile background: canvas image-sequence scrubber
+   iOS Safari won't render <video> currentTime seeks during a scroll, so on
+   touch devices we draw a pre-exported frame sequence to a canvas instead —
+   the same technique used for reliable scroll-scrubbed backgrounds on iOS.
+   ------------------------------------------------------------ */
+function setupFrameScrub() {
+  const canvas = document.querySelector("#bgframes");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const FRAME_COUNT = 127;
+  const base = import.meta.env.BASE_URL || "/";
+  const pad = (n) => String(n).padStart(3, "0");
+
+  // Stop the (now-hidden) video from downloading its 12MB on mobile
+  if (bgVideo) {
+    try {
+      bgVideo.pause();
+      const src = bgVideo.querySelector("source");
+      if (src) src.remove();
+      bgVideo.removeAttribute("src");
+      bgVideo.load();
+    } catch (_) {}
+  }
+
+  const frames = [];
+  for (let i = 1; i <= FRAME_COUNT; i++) {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = `${base}frames/f_${pad(i)}.jpg`;
+    frames.push(img);
+  }
+
+  let cw = 0, ch = 0, currentIndex = -1;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cw = window.innerWidth;
+    ch = window.innerHeight;
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(ch * dpr);
+    canvas.style.width = cw + "px";
+    canvas.style.height = ch + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw(currentIndex < 0 ? 0 : currentIndex, true);
+  }
+
+  function drawCover(img) {
+    if (!img || !img.naturalWidth) return false;
+    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+    const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+    ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+    return true;
+  }
+
+  function draw(idx, force) {
+    idx = Math.max(0, Math.min(FRAME_COUNT - 1, idx));
+    if (idx === currentIndex && !force) return;
+    if (drawCover(frames[idx])) {
+      currentIndex = idx;
+    } else {
+      // requested frame not loaded yet — show the nearest one that is
+      for (let d = 1; d < FRAME_COUNT; d++) {
+        if (drawCover(frames[idx - d]) || drawCover(frames[idx + d])) break;
+      }
+    }
+  }
+
+  // Paint as soon as the first frames arrive, then keep in sync via rAF
+  frames[0].addEventListener("load", () => draw(0, true), { once: true });
+  window.addEventListener("resize", resize);
+  resize();
+
+  function loop() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? gsap.utils.clamp(0, 1, window.scrollY / max) : 0;
+    draw(Math.round(p * (FRAME_COUNT - 1)));
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 }
+
+if (isTouch) setupFrameScrub();
 
 /* Drifting accent glow follows scroll subtly (never dominant) */
 const glow = document.querySelector("#glow");
@@ -526,28 +598,9 @@ function boot() {
 
   const done = () => {
     pre.classList.add("is-done");
-    if (bgVideo) {
-      if (isTouch) {
-        // Mobile: scrub the video with scroll (same as desktop). Prime the
-        // decoder with a muted play()->pause() so iOS honors currentTime seeks
-        // (the all-keyframe encode makes those seeks fast), then scrub controls it.
-        bgVideo.muted = true;
-        bgVideo.loop = false;
-        const prime = () => {
-          const p = bgVideo.play();
-          if (p && p.then) p.then(() => { bgVideo.pause(); scrubVideo(); }).catch(() => {});
-          else { bgVideo.pause(); scrubVideo(); }
-        };
-        prime();
-        // iOS often only unlocks seeking after a real gesture — the first
-        // touch/scroll re-primes so scrubbing kicks in immediately after.
-        const kick = () => prime();
-        window.addEventListener("touchstart", kick, { passive: true, once: true });
-        window.addEventListener("click", kick, { once: true });
-      } else {
-        bgVideo.play().catch(() => {}); // decode warm-up; scrub controls it
-      }
-    }
+    // Desktop scrubs the <video>; mobile uses the canvas frame sequence
+    // (setupFrameScrub), so only warm up the video on non-touch.
+    if (bgVideo && !isTouch) bgVideo.play().catch(() => {}); // decode warm-up; scrub controls it
     heroIntro();
     scrubVideo();
     ScrollTrigger.refresh();
