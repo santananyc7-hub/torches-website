@@ -301,6 +301,7 @@ section {
    ============================================================ */
 
 .hero {
+  position: relative;
   min-height: 100svh;
   display: grid;
   grid-template-columns: 1.1fr minmax(340px, 460px);
@@ -309,13 +310,29 @@ section {
   padding-top: 15vh;
   padding-bottom: 12vh;
 }
+/* Legibility scrim — darkens behind the headline over the bright, moving
+   video, fading to clear on the right so the video + deals panel stay visible. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(85% 72% at 24% 46%, rgba(3, 6, 14, 0.76), rgba(3, 6, 14, 0) 72%),
+    linear-gradient(90deg, rgba(3, 6, 14, 0.74) 0%, rgba(3, 6, 14, 0.3) 44%, rgba(3, 6, 14, 0) 74%);
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
 .hero__inner {
   max-width: 44ch;
 }
 .hero__title {
   font-size: clamp(2.8rem, 8.5vw, 9rem);
   letter-spacing: 0.005em;
-  text-shadow: 0 8px 60px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.78), 0 10px 60px rgba(0, 0, 0, 0.5);
 }
 
 /* Hero deals / products panel (above the fold, max conversion) */
@@ -1566,6 +1583,16 @@ section {
     align-content: center;
     gap: 2rem;
     padding-top: 16vh;
+  }
+  /* Single-column hero: text spans the full width, so darken the whole
+     column top-to-bottom for legibility over the looping mobile video. */
+  .hero::before {
+    background: linear-gradient(
+      180deg,
+      rgba(3, 6, 14, 0.68) 0%,
+      rgba(3, 6, 14, 0.56) 46%,
+      rgba(3, 6, 14, 0.42) 100%
+    );
   }
   .dealpulse {
     width: 100%;
